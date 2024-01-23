@@ -2,20 +2,21 @@ import requests
 from bs4 import BeautifulSoup
 
 def parseWebToHtml():
-    url = "https://davinagaz.by/" 
+    url = "https://time.is/" 
     accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0"
     headers = {"Accept":accept,"User-Agent": user_agent}
     
     req = requests.get(url, headers = headers)         # с асептом и агентом 
-    #req = requests.get(url)
+    
                                                         #req.encoding = "utf-8-sig"
     src = req.text
 
-    
     with open("c:/Users/Danik/pythonProjects/PyParser/index.html","w",encoding="utf-8-sig") as file:        #надо  раскоментить
         file.write(src)
 
+    
+    
 
 
 def parseOfflineHtml():
@@ -40,7 +41,31 @@ def parseOfflineHtml():
    
     #print(all_subnav_item_dict)
     
+def testParseOnline():
+    url = "https://time.is/" 
+    accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0"
+    headers = {"Accept":accept,"User-Agent": user_agent}
     
+    req = requests.get(url, headers = headers) 
+
+    soup = BeautifulSoup(req.content,'lxml')
+    some = soup.find('time', id='clock')
+   
+    
+    print(str(some)[17:25] )
+   
+   
+def testParseOffline():
+    with open("c:/Users/Danik/pythonProjects/PyParser/index.html",encoding="utf-8-sig") as file:
+         src_read = file.read()
+
+    soup = BeautifulSoup(src_read,'lxml')
+    some = soup.find('time', id='clock')
+   
+    
+    print(str(some)[17:25] )
+ 
    
 #for item in all_subnav_item_dict:
 #    print(all_subnav_item)
@@ -60,8 +85,9 @@ def parseOfflineHtml():
 #print(name)
 
 def main():
-   parseWebToHtml()
+   #parseWebToHtml()
    #parseOfflineHtml()
-    
+   testParseOnline() 
+   #testParseOffline()
 if __name__ == '__main__':
     main()
